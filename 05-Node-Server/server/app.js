@@ -1,10 +1,18 @@
 let express = require('express');
-let app = express();
-
+const app = express();
+const sequelize = require("./db");
 let journal = require('./controllers/journalcontroller')
+let user = require('./controllers/usercontroller')
 
-app.use('/journal', journal)
+sequelize.sync();
+//sequelize.sync((force: true))
 
-app.listen(3000, function(){
+app.use(express.json());
+
+app.use('/user', user);
+
+app.use('/journal', journal);
+
+app.listen(3000, function () {
     console.log('App is listening on port 3000')
 })
