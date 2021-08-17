@@ -15,31 +15,31 @@ router.post('/', validateSession, (req, res) => {
         .catch(err => res.status(500).json({error: err}))
 })
 
-router.get('/all', validateSession, (req, res) => {
+router.get('/', validateSession, (req, res) => {
     Log.findAll()
     .then(logs => res.status(200).json(logs))
     .catch(err => res.status(500).json({error: err}))
 });
 
-router.get('/', validateSession, (req, res) => {
-    let owner_id = req.user.id
-    Log.findAll({
-        where: {owner_id: req.user.id}
-    })
-    .then(logs => res.status(200).json(logs))
-    .catch(err => res.status(500).json({error: err}))
-});
+// router.get('/', validateSession, (req, res) => {
+//     let owner_id = req.user.id
+//     Log.findAll({
+//         where: {owner_id: req.user.id}
+//     })
+//     .then(logs => res.status(200).json(logs))
+//     .catch(err => res.status(500).json({error: err}))
+// });
 
-router.get('/:owner_id', validateSession, (req, res) => {
+router.get('/:id', validateSession, (req, res) => {
     // let owner_id = req.user.id
     Log.findAll({
-        where: {owner_id: req.params.owner_id}
+        where: {id: req.params.id}
     })
     .then(logs => res.status(200).json(logs))
     .catch(err => res.status(500).json({error: err}))
 });
 
-router.put('/update/:id', validateSession, function (req, res) {
+router.put('/:id', validateSession, function (req, res) {
     const updateLogEntry = {
         description: req.body.log.description,
         definition: req.body.log.definition,
@@ -51,7 +51,7 @@ router.put('/update/:id', validateSession, function (req, res) {
         .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.delete("/delete/:id", validateSession, function (req, res) {
+router.delete("/:id", validateSession, function (req, res) {
     const query = { where: { id: req.params.id, owner_id: req.user.id }};
 
         Log.destroy(query)
