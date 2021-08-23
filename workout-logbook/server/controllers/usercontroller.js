@@ -5,9 +5,11 @@ const bcrypt = require('bcryptjs');
 
 router.post('/register', function(req,res) {
 
+    let {username, passwordhash} = req.body.user
+
     User.create({
-        username: req.body.user.username,
-        passwordhash: bcrypt.hashSync(req.body.user.passwordhash, 13)
+        username,
+        passwordhash: bcrypt.hashSync(passwordhash, 13)
     })
     .then(function createSuccess(user) {
             let token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: 60*60*24});
